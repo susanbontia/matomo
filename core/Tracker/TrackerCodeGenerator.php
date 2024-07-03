@@ -313,6 +313,12 @@ class TrackerCodeGenerator
         }
         $options = '';
         if ($mergeSubdomains && !empty($firstHost)) {
+
+            // Check if $firstHost starts with "www."
+            if (strpos($firstHost, "www.") === 0) {
+                $firstHost = substr($firstHost, 4); // Remove "www." from the beginning
+            }
+            
             $options .= '  _paq.push(["setCookieDomain", "*.' . $firstHost . '"]);' . "\n";
         }
         if ($mergeAliasUrls && !empty($websiteHosts)) {
