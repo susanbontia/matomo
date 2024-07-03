@@ -318,10 +318,15 @@ class TrackerCodeGenerator
             if (strpos($firstHost, "www.") === 0) {
                 $firstHost = substr($firstHost, 4); // Remove "www." from the beginning
             }
-            
+
             $options .= '  _paq.push(["setCookieDomain", "*.' . $firstHost . '"]);' . "\n";
         }
         if ($mergeAliasUrls && !empty($websiteHosts)) {
+            // Remove "www." from domains that start with it
+            $websiteHosts = array_map(function($host) {
+                return (strpos($host, "www.") === 0) ? substr($host, 4) : $host;
+            }, $websiteHosts);
+
             $urls = '["*.' . implode('","*.', $websiteHosts) . '"]';
             $options .= '  _paq.push(["setDomains", ' . $urls . ']);' . "\n";
         }
